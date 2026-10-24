@@ -33,11 +33,11 @@ export const AUTHOR = {
 
 export const LINKS = {
   /** TODO：官方 LINE 加好友網址（例如 https://lin.ee/xxxxxxx） */
-  line: 'https://lin.ee/REPLACE_ME',
+  line: 'https://lin.ee/sdrEuGA',
   /** LINE 上的關鍵字（文末 CTA 會顯示「LINE 輸入『配置』」） */
   lineKeyword: '配置',
   /** TODO：IG 帳號網址 */
-  instagram: 'https://www.instagram.com/REPLACE_ME/',
+  instagram: 'https://www.instagram.com/momo_82786/',
   threads: 'https://www.threads.net/@momo_82786',
 };
 
