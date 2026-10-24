@@ -238,7 +238,18 @@ const jsonLd = [
       out('inflation').innerHTML = `💡 提醒：若以每年通膨 ${INFL * 100}% 估算，${years} 年後的 ${wan(target)}，購買力約等於現在的 <strong>${wan(real)}</strong>。`;
     };
 
-    root.querySelectorAll('input').forEach((el) => el.addEventListener('input', calc));
+    let tracked = false;
+    root.querySelectorAll('input').forEach((el) =>
+      el.addEventListener('input', () => {
+        calc();
+        // 流量分析：記錄有人實際操作試算（每次瀏覽只記一次）
+        const g = (window as any).gtag;
+        if (!tracked && typeof g === 'function') {
+          tracked = true;
+          g('event', 'calculator_use', { tool: 'retirement' });
+        }
+      }),
+    );
     calc();
   }
 </script>

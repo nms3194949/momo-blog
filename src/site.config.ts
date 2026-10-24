@@ -35,7 +35,7 @@ export const AUTHOR = {
     '財產保險業務員',
     '外幣收付之非投資型保險商品業務員',
     '信託業業務人員',
-    '投信投顧相關法規（含自律規範）測驗合格',
+    '投信投顧相關法規',
   ] as string[],
   /** 作者大頭照，放在 public/ 底下 */
   avatar: '/avatar.png',
@@ -49,6 +49,14 @@ export const LINKS = {
   /** IG 帳號網址 */
   instagram: 'https://www.instagram.com/momo_82786/',
   threads: 'https://www.threads.net/@momo_82786',
+};
+
+/**
+ * 流量分析：Google Analytics 4 的評估 ID（G- 開頭）。
+ * 留空就不會載入任何追蹤程式。
+ */
+export const ANALYTICS = {
+  ga4Id: '',
 };
 
 /**

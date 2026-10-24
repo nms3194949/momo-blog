@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { SITE, AUTHOR, LINKS } from '../site.config';
+import { SITE, AUTHOR, LINKS, ANALYTICS } from '../site.config';
 import { url, absUrl } from '../lib/posts';
 import Footer from '../components/Footer.astro';
 import StickyBar from '../components/StickyBar.astro';
@@ -97,6 +97,33 @@ const allLd = [...baseLd, ...jsonLd];
     <link rel="alternate" type="text/plain" title="llms.txt" href={url('/llms.txt')} />
 
     {allLd.map((ld) => <script type="application/ld+json" set:html={JSON.stringify(ld)} />)}
+    {
+      ANALYTICS.ga4Id && (
+        <>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS.ga4Id}`} />
+          <script is:inline define:vars={{ gaId: ANALYTICS.ga4Id }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', gaId);
+            // 追蹤導流點擊：LINE、IG、Threads
+            document.addEventListener('click', function (e) {
+              var a = e.target.closest && e.target.closest('a[href]');
+              if (!a) return;
+              var h = a.href;
+              var dest = h.indexOf('lin.ee') > -1 || h.indexOf('line.me') > -1 ? 'line'
+                : h.indexOf('instagram.com') > -1 ? 'instagram'
+                : h.indexOf('threads.net') > -1 ? 'threads' : '';
+              if (!dest) return;
+              var box = a.closest('.cta-box, .sticky-bar, .site-footer, .hero');
+              var where = !box ? 'other' : box.classList.contains('sticky-bar') ? 'sticky' : box.classList.contains('site-footer') ? 'footer' : box.classList.contains('hero') ? 'hero' : 'cta';
+              gtag('event', dest + '_click', { link_location: where, page_path: location.pathname });
+            });
+          </script>
+        </>
+      )
+    }
   </head>
   <body>
     <header class="site-header">
