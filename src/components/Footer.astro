@@ -1,6 +1,5 @@
 ---
 import { SITE, LINKS, DISCLAIMER, withUtm } from '../site.config';
-import { url } from '../lib/posts';
 const year = new Date().getFullYear();
 ---
 
@@ -13,8 +12,6 @@ const year = new Date().getFullYear();
         <a href={withUtm(LINKS.line, 'footer', 'footer')} target="_blank" rel="noopener">LINE</a>
         <a href={withUtm(LINKS.instagram, 'footer', 'footer')} target="_blank" rel="noopener">Instagram</a>
         <a href={LINKS.threads} target="_blank" rel="noopener">Threads</a>
-        <a href={url('/rss.xml')}>RSS</a>
-        <a href={url('/llms.txt')}>llms.txt</a>
       </nav>
     </div>
   </div>
