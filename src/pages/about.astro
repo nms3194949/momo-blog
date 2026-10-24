@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CtaBox from '../components/CtaBox.astro';
-import { AUTHOR, SITE } from '../site.config';
+import { AUTHOR, AUTHOR_TAGLINE, SITE } from '../site.config';
 import { url, absUrl } from '../lib/posts';
 
 const jsonLd = [
@@ -20,17 +20,21 @@ const jsonLd = [
       <img src={url(AUTHOR.avatar)} alt={AUTHOR.name} width="96" height="96" />
       <div>
         <h1>{AUTHOR.name}</h1>
-        <p class="muted">{AUTHOR.jobTitle}・{AUTHOR.worksFor}</p>
+        <p class="muted">{AUTHOR_TAGLINE}</p>
       </div>
     </header>
 
     <div class="prose">
       <p>{AUTHOR.bio}</p>
 
-      <h2>專業資格</h2>
-      <ul>
-        {AUTHOR.credentials.map((c) => <li>{c}</li>)}
-      </ul>
+      {AUTHOR.credentials.length > 0 && (
+        <>
+          <h2>專業資格</h2>
+          <ul>
+            {AUTHOR.credentials.map((c) => <li>{c}</li>)}
+          </ul>
+        </>
+      )}
 
       <h2>我在這裡寫什麼</h2>
       <p>
@@ -45,6 +49,6 @@ const jsonLd = [
       </ul>
     </div>
 
-    <CtaBox campaign="about" />
+    <CtaBox campaign="about" variant="profile" />
   </article>
 </BaseLayout>

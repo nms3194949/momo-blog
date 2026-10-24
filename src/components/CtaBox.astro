@@ -1,32 +1,51 @@
 ---
-// 文末導流區塊：LINE 為主、IG 為輔
+// 導流區塊：LINE 為主、IG 為輔
+// variant="article"（預設）：文章結尾，引導在 LINE 輸入關鍵字領取延伸資料
+// variant="profile"：自介頁，單純邀請加入 LINE
 import { LINKS, withUtm } from '../site.config';
 
 interface Props {
   campaign: string;
   keyword?: string;
   igUrl?: string;
+  variant?: 'article' | 'profile';
 }
-const { campaign, keyword = LINKS.lineKeyword, igUrl } = Astro.props;
+const { campaign, keyword = LINKS.lineKeyword, igUrl, variant = 'article' } = Astro.props;
+const isProfile = variant === 'profile';
+const place = isProfile ? 'profile' : 'article-end';
 ---
 
 <aside class="cta-box">
-  <p class="cta-eyebrow">想拿完整版？</p>
-  <p class="cta-title">加入官方 LINE，輸入「{keyword}」</p>
-  <p class="cta-text">
-    市場出現重要變化時，我會在 LINE 第一時間整理重點給你；這篇提到的完整清單與配置範例，也會在 LINE 提供。
-  </p>
+  {
+    isProfile ? (
+      <>
+        <p class="cta-eyebrow">保持聯繫</p>
+        <p class="cta-title">加入 MOMO 官方 LINE</p>
+        <p class="cta-text">
+          市場出現重要變化時，我會在 LINE 第一時間整理重點給你；新文章與配置觀念，也會在 LINE 同步分享。
+        </p>
+      </>
+    ) : (
+      <>
+        <p class="cta-eyebrow">這篇的延伸資料</p>
+        <p class="cta-title">加入官方 LINE，輸入「{keyword}」</p>
+        <p class="cta-text">
+          這篇提到的完整清單與配置範例，會在 LINE 提供；市場出現重要變化時，我也會在 LINE 第一時間整理重點給你。
+        </p>
+      </>
+    )
+  }
   <div class="cta-actions">
-    <a class="btn btn-line" href={withUtm(LINKS.line, campaign, 'article-end')} target="_blank" rel="noopener">
+    <a class="btn btn-line" href={withUtm(LINKS.line, campaign, place)} target="_blank" rel="noopener">
       加入官方 LINE
     </a>
     {
       igUrl ? (
-        <a class="btn btn-ghost" href={withUtm(igUrl, campaign, 'article-end')} target="_blank" rel="noopener">
+        <a class="btn btn-ghost" href={withUtm(igUrl, campaign, place)} target="_blank" rel="noopener">
           看 IG 輪播版
         </a>
       ) : (
-        <a class="btn btn-ghost" href={withUtm(LINKS.instagram, campaign, 'article-end')} target="_blank" rel="noopener">
+        <a class="btn btn-ghost" href={withUtm(LINKS.instagram, campaign, place)} target="_blank" rel="noopener">
           追蹤 IG
         </a>
       )
