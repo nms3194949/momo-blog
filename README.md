@@ -1,4 +1,4 @@
-# MOMO FinSphere 財商智庫｜文章網站
+# MOMO雙贏策略｜文章網站
 
 IG 輪播圖的網站版。每篇文章是一個資料夾，push 到 GitHub 後會自動上線。
 
