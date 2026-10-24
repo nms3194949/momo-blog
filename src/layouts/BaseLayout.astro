@@ -52,15 +52,14 @@ const baseLd = [
     name: AUTHOR.name,
     alternateName: AUTHOR.alternateName,
     jobTitle: AUTHOR.jobTitle,
-    worksFor: { '@type': 'Organization', name: AUTHOR.worksFor },
+    worksFor: AUTHOR.worksFor ? { '@type': 'Organization', name: AUTHOR.worksFor } : undefined,
     description: AUTHOR.bio,
     url: absUrl('/about/'),
     image: absUrl(AUTHOR.avatar),
-    hasCredential: AUTHOR.credentials.map((c) => ({
-      '@type': 'EducationalOccupationalCredential',
-      name: c,
-    })),
-    knowsAbout: ['資產配置', '配息基金', '投資型保單', '基金投資', '退休現金流規劃'],
+    hasCredential: AUTHOR.credentials.length
+      ? AUTHOR.credentials.map((c) => ({ '@type': 'EducationalOccupationalCredential', name: c }))
+      : undefined,
+    knowsAbout: ['資產配置', '配息基金', '保單基金規劃', '基金投資', '退休現金流規劃'],
     sameAs: [LINKS.instagram, LINKS.threads].filter((u) => !u.includes('REPLACE_ME')),
   },
 ];
@@ -90,7 +89,9 @@ const allLd = [...baseLd, ...jsonLd];
     {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="icon" href={url('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={url('/favicon.ico')} sizes="48x48" />
+    <link rel="icon" href={url('/icon-192.png')} type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href={url('/apple-touch-icon.png')} />
     <link rel="sitemap" href={url('/sitemap-index.xml')} />
     <link rel="alternate" type="application/rss+xml" title={SITE.name} href={url('/rss.xml')} />
     <link rel="alternate" type="text/plain" title="llms.txt" href={url('/llms.txt')} />
@@ -101,7 +102,7 @@ const allLd = [...baseLd, ...jsonLd];
     <header class="site-header">
       <div class="wrap header-inner">
         <a class="brand" href={url('/')}>
-          <span class="brand-mark">M</span>
+          <img class="brand-mark" src={url('/icon-96.png')} alt="" width="32" height="32" />
           <span class="brand-name">{SITE.name}</span>
         </a>
         <nav class="nav">
