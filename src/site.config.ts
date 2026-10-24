@@ -35,7 +35,7 @@ export const AUTHOR = {
     '財產保險業務員',
     '外幣收付之非投資型保險商品業務員',
     '信託業業務人員',
-    '投信投顧相關法規',
+    '投信投顧相關法規（含自律規範）測驗合格',
   ] as string[],
   /** 作者大頭照，放在 public/ 底下 */
   avatar: '/avatar.png',
@@ -56,7 +56,7 @@ export const LINKS = {
  * 留空就不會載入任何追蹤程式。
  */
 export const ANALYTICS = {
-  ga4Id: '',
+  ga4Id: 'G-VEDLJKB232',
 };
 
 /**
