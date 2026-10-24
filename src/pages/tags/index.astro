@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedPosts, collectTags, url, tagPath } from '../../lib/posts';
+
+const tags = collectTags(await getPublishedPosts());
+---
+
+<BaseLayout title="文章主題" description="依主題瀏覽 MOMO FinSphere 的所有文章：配息基金、資產配置、投資型保單、市場判讀。">
+  <section class="wrap">
+    <h1 class="page-title">文章主題</h1>
+    <ul class="tag-cloud">
+      {[...tags.entries()].map(([t, n]) => (
+        <li><a href={url(tagPath(t))}>#{t}<span>{n}</span></a></li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

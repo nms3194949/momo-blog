@@ -1,0 +1,15 @@
+---
+// 手機版底部固定導流列（桌機版隱藏）
+import { LINKS, withUtm } from '../site.config';
+
+const campaign = Astro.url.pathname.split('/').filter(Boolean).pop() ?? 'home';
+---
+
+<div class="sticky-bar" aria-label="追蹤 MOMO">
+  <a class="btn btn-line" href={withUtm(LINKS.line, campaign, 'sticky')} target="_blank" rel="noopener">
+    加 LINE 收市場更新
+  </a>
+  <a class="btn btn-ghost" href={withUtm(LINKS.instagram, campaign, 'sticky')} target="_blank" rel="noopener">
+    看 IG
+  </a>
+</div>

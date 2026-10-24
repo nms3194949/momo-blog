@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import { url, postPath, formatDate, type Post } from '../lib/posts';
+
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const cover = post.data.slides[0];
+---
+
+<article class="card">
+  <a href={url(postPath(post))} class="card-link">
+    {
+      cover && (
+        <div class="card-cover">
+          <Image src={cover} alt="" widths={[360, 640]} sizes="(max-width: 720px) 40vw, 220px" />
+        </div>
+      )
+    }
+    <div class="card-body">
+      <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+      <h2>{post.data.title}</h2>
+      <p>{post.data.description}</p>
+      {post.data.tags.length > 0 && (
+        <ul class="tag-list small">
+          {post.data.tags.map((t) => <li>#{t}</li>)}
+        </ul>
+      )}
+    </div>
+  </a>
+</article>

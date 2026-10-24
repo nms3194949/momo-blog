@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { SITE, AUTHOR, LINKS, withUtm } from '../site.config';
+import { getPublishedPosts, url, tagPath, collectTags } from '../lib/posts';
+
+const posts = await getPublishedPosts();
+const tags = [...collectTags(posts).keys()].slice(0, 8);
+---
+
+<BaseLayout title={SITE.name} description={SITE.description}>
+  <section class="hero wrap">
+    <p class="eyebrow">資產配置 × 配息現金流 × 市場判讀</p>
+    <h1>市場無法預測，<br />但資產可以配置。</h1>
+    <p class="hero-text">
+      我是 {AUTHOR.name}，{AUTHOR.worksFor}{AUTHOR.jobTitle}。這裡收錄我在 IG 分享過的每一篇圖卡，並補上完整文字、數據來源與常見問題。
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-line" href={withUtm(LINKS.line, 'home', 'hero')} target="_blank" rel="noopener">加入官方 LINE</a>
+      <a class="btn btn-ghost" href={withUtm(LINKS.instagram, 'home', 'hero')} target="_blank" rel="noopener">追蹤 IG</a>
+    </div>
+  </section>
+
+  {
+    tags.length > 0 && (
+      <div class="wrap">
+        <nav class="tag-list topic-nav" aria-label="熱門主題">
+          {tags.map((t) => <a href={url(tagPath(t))}>#{t}</a>)}
+        </nav>
+      </div>
+    )
+  }
+
+  <section class="wrap">
+    <h2 class="section-title">最新文章</h2>
+    <div class="card-list">
+      {posts.map((p) => <PostCard post={p} />)}
+    </div>
+  </section>
+</BaseLayout>

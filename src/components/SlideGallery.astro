@@ -1,0 +1,52 @@
+---
+// 輪播圖：手機左右滑，桌機可點箭頭
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  slides: ImageMetadata[];
+  alts: string[];
+  title: string;
+}
+const { slides, alts, title } = Astro.props;
+---
+
+{
+  slides.length > 0 && (
+    <figure class="gallery" data-gallery>
+      <div class="gallery-track" data-track>
+        {slides.map((img, i) => (
+          <div class="gallery-slide">
+            <Image
+              src={img}
+              alt={alts[i] ?? `${title}（第 ${i + 1} 張）`}
+              widths={[480, 800, 1080]}
+              sizes="(max-width: 720px) 88vw, 640px"
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+          </div>
+        ))}
+      </div>
+      <div class="gallery-nav">
+        <button type="button" data-prev aria-label="上一張">‹</button>
+        <span data-counter>1 / {slides.length}</span>
+        <button type="button" data-next aria-label="下一張">›</button>
+      </div>
+      <figcaption>IG 輪播圖原圖・下方為完整文字版</figcaption>
+    </figure>
+  )
+}
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((g) => {
+    const track = g.querySelector<HTMLElement>('[data-track]')!;
+    const counter = g.querySelector<HTMLElement>('[data-counter]')!;
+    const total = track.children.length;
+    const idx = () => Math.round(track.scrollLeft / track.clientWidth);
+    const go = (d: number) =>
+      track.scrollTo({ left: Math.max(0, Math.min(total - 1, idx() + d)) * track.clientWidth, behavior: 'smooth' });
+    g.querySelector('[data-prev]')!.addEventListener('click', () => go(-1));
+    g.querySelector('[data-next]')!.addEventListener('click', () => go(1));
+    track.addEventListener('scroll', () => (counter.textContent = `${idx() + 1} / ${total}`), { passive: true });
+  });
+</script>

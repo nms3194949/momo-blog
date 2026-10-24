@@ -1,0 +1,192 @@
+---
+import { render } from 'astro:content';
+import { getImage } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SlideGallery from '../../components/SlideGallery.astro';
+import CtaBox from '../../components/CtaBox.astro';
+import PostCard from '../../components/PostCard.astro';
+import { SITE, AUTHOR } from '../../site.config';
+import {
+  getPublishedPosts,
+  url,
+  absUrl,
+  postPath,
+  tagPath,
+  formatDate,
+  type Post,
+} from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post, all: posts },
+  }));
+}
+
+interface Props {
+  post: Post;
+  all: Post[];
+}
+const { post, all } = Astro.props;
+const { data } = post;
+const { Content } = await render(post);
+
+const pageUrl = absUrl(postPath(post));
+const modified = data.updated ?? data.date;
+
+// 分享縮圖：第一張輪播圖
+let ogImage: string | undefined;
+if (data.slides[0]) {
+  const img = await getImage({ src: data.slides[0], width: 1080, format: 'jpeg' });
+  ogImage = new URL(img.src, Astro.site).toString();
+}
+
+// 相關文章：同標籤優先，不足用最新文章補
+const related = all
+  .filter((p) => p.id !== post.id)
+  .map((p) => ({ p, score: p.data.tags.filter((t) => data.tags.includes(t)).length }))
+  .sort((a, b) => b.score - a.score || b.p.data.date.getTime() - a.p.data.date.getTime())
+  .slice(0, 3)
+  .map((x) => x.p);
+
+// ── 結構化資料（AI 與 Google 讀這段來理解文章） ──
+const jsonLd: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    '@id': `${pageUrl}#article`,
+    headline: data.title,
+    description: data.description,
+    abstract: data.summary,
+    datePublished: data.date.toISOString(),
+    dateModified: modified.toISOString(),
+    inLanguage: SITE.lang,
+    mainEntityOfPage: pageUrl,
+    url: pageUrl,
+    image: ogImage ? [ogImage] : undefined,
+    keywords: data.tags.join(', '),
+    author: { '@id': absUrl('/about/#person') },
+    publisher: { '@id': absUrl('/about/#person') },
+    isPartOf: { '@id': absUrl('/#website') },
+    sameAs: data.ig_url ? [data.ig_url] : undefined,
+    citation: data.sources.length
+      ? data.sources.map((s) => (s.url ? { '@type': 'CreativeWork', name: s.name, url: s.url } : s.name))
+      : undefined,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首頁', item: absUrl('/') },
+      ...(data.tags[0]
+        ? [{ '@type': 'ListItem', position: 2, name: data.tags[0], item: absUrl(tagPath(data.tags[0])) }]
+        : []),
+      { '@type': 'ListItem', position: data.tags[0] ? 3 : 2, name: data.title, item: pageUrl },
+    ],
+  },
+];
+if (data.faq.length) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: data.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+}
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  image={ogImage}
+  type="article"
+  jsonLd={jsonLd}
+  publishedTime={data.date.toISOString()}
+  modifiedTime={modified.toISOString()}
+>
+  <article class="wrap article">
+    <nav class="breadcrumb" aria-label="麵包屑">
+      <a href={url('/')}>首頁</a>
+      {data.tags[0] && (<><span>/</span><a href={url(tagPath(data.tags[0]))}>{data.tags[0]}</a></>)}
+    </nav>
+
+    <header class="article-header">
+      <h1>{data.title}</h1>
+      <p class="byline">
+        <a href={url('/about/')}>{AUTHOR.name}</a>・{AUTHOR.jobTitle}
+        <span class="dot">・</span>
+        <time datetime={data.date.toISOString()}>發布 {formatDate(data.date)}</time>
+        {data.updated && (<><span class="dot">・</span><time datetime={data.updated.toISOString()}>更新 {formatDate(data.updated)}</time></>)}
+      </p>
+    </header>
+
+    <section class="summary" aria-label="重點答案">
+      <p class="summary-label">重點答案</p>
+      <p>{data.summary}</p>
+    </section>
+
+    <SlideGallery slides={data.slides} alts={data.slide_alts} title={data.title} />
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      data.faq.length > 0 && (
+        <section class="faq">
+          <h2>常見問題</h2>
+          {data.faq.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      data.sources.length > 0 && (
+        <section class="sources">
+          <h2>資料來源</h2>
+          <ul>
+            {data.sources.map((s) => (
+              <li>{s.url ? <a href={s.url} target="_blank" rel="noopener nofollow">{s.name}</a> : s.name}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <CtaBox campaign={post.id} keyword={data.line_keyword} igUrl={data.ig_url} />
+
+    <section class="author-box">
+      <img src={url(AUTHOR.avatar)} alt={AUTHOR.name} width="64" height="64" loading="lazy" />
+      <div>
+        <p class="author-name">{AUTHOR.name}<span>{AUTHOR.jobTitle}・{AUTHOR.worksFor}</span></p>
+        <p>{AUTHOR.bio}</p>
+      </div>
+    </section>
+
+    {data.tags.length > 0 && (
+      <ul class="tag-list">
+        {data.tags.map((t) => <li><a href={url(tagPath(t))}>#{t}</a></li>)}
+      </ul>
+    )}
+  </article>
+
+  {
+    related.length > 0 && (
+      <section class="wrap related">
+        <h2>延伸閱讀</h2>
+        <div class="card-grid">
+          {related.map((p) => <PostCard post={p} />)}
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
