@@ -54,6 +54,8 @@ const baseLd = [
     jobTitle: AUTHOR.jobTitle,
     worksFor: AUTHOR.worksFor ? { '@type': 'Organization', name: AUTHOR.worksFor } : undefined,
     description: AUTHOR.bio,
+    disambiguatingDescription: AUTHOR.disambiguation,
+    brand: { '@type': 'Brand', name: SITE.name },
     url: absUrl('/about/'),
     image: absUrl(AUTHOR.avatar),
     hasCredential: AUTHOR.credentials.length

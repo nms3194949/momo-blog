@@ -14,8 +14,11 @@ export const SITE = {
 };
 
 export const AUTHOR = {
-  name: 'MOMO（余明哲）',
-  alternateName: ['MOMO', '余明哲', '明哲MOMO'],
+  name: '明哲MOMO',
+  alternateName: ['明哲 MOMO', 'MOMO', '余明哲', 'momo_82786'],
+  /** 給搜尋引擎與 AI 的身分說明，避免和同名品牌混淆 */
+  disambiguation:
+    '台灣的保單基金規劃與資產配置教育內容創作者，經營「MOMO雙贏策略」品牌與 MOMO財商智庫網站；與 momo購物網（富邦媒體科技）無關。',
   /** 名字下方的介紹文字 */
   jobTitle: '保單基金規劃・資產配置教育',
   /**
