@@ -2,7 +2,7 @@
 // 由 .github/workflows/main.yml 的 indexnow 工作自動執行，不需要手動跑
 import { execSync } from 'node:child_process';
 
-const SITE = 'https://nms3194949.github.io/momo-blog';
+const SITE = 'https://momowinwin.com/momo-blog';
 const KEY = '152b46d40afee669f85ae0b1dbe8bdf8';
 const HOST = new URL(SITE).host;
 

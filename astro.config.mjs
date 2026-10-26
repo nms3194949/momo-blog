@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 //  網址設定（二選一）
 //
 //  A. 先用 GitHub 免費網址（repo 名稱假設是 momo-blog）：
-//     SITE_URL = 'https://nms3194949.github.io'
+//     SITE_URL = 'https://momowinwin.com'
 //     BASE     = '/momo-blog'
 //
 //  B. 綁定自有網域之後（建議）：
@@ -14,7 +14,7 @@ import sitemap from '@astrojs/sitemap';
 //     BASE     = '/'
 //     並把 public/CNAME 的內容改成你的網域
 // ============================================================
-const SITE_URL = 'https://nms3194949.github.io';
+const SITE_URL = 'https://momowinwin.com';
 const BASE = '/momo-blog';
 
 export default defineConfig({
