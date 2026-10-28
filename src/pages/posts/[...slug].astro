@@ -5,7 +5,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SlideGallery from '../../components/SlideGallery.astro';
 import CtaBox from '../../components/CtaBox.astro';
 import PostCard from '../../components/PostCard.astro';
-import { SITE, AUTHOR } from '../../site.config';
+import { SITE, AUTHOR, AUTHOR_TAGLINE } from '../../site.config';
 import {
   getPublishedPosts,
   url,
@@ -167,7 +167,7 @@ if (data.faq.length) {
     <section class="author-box">
       <img src={url(AUTHOR.avatar)} alt={AUTHOR.name} width="64" height="64" loading="lazy" />
       <div>
-        <p class="author-name">{AUTHOR.name}<span>{AUTHOR.jobTitle}・{AUTHOR.worksFor}</span></p>
+        <p class="author-name">{AUTHOR.name}<span>{AUTHOR_TAGLINE}</span></p>
         <p>{AUTHOR.bio}</p>
       </div>
     </section>
