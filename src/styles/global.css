@@ -64,6 +64,7 @@ a { color: inherit; }
 .eyebrow { color: var(--gold); font-weight: 700; font-size: 14px; letter-spacing: .12em; margin: 0 0 12px; }
 .hero h1 { font-family: var(--serif); font-weight: 800; font-size: clamp(30px, 7vw, 44px); line-height: 1.35; margin: 0 0 18px; }
 .hero-text { color: var(--ink-2); margin: 0 0 24px; }
+.hero-lead { font-family: var(--serif); font-weight: 600; font-size: clamp(18px, 4.2vw, 21px); line-height: 1.7; color: var(--ink); margin: 0 0 16px; padding-left: 14px; border-left: 3px solid var(--gold); }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .topic-nav { margin-bottom: 8px; }
 .section-title, .page-title { font-family: var(--serif); font-size: 24px; margin: 36px 0 16px; }
