@@ -24,7 +24,6 @@ sources:
   - name: S&P Global 美國 PMI 初值
   - name: 密西根大學消費者信心指數
   - name: CME FedWatch（數據截至 2026/10/23）
-line_keyword: 配置
 ---
 
 ## 這週美國公布了哪些數據？

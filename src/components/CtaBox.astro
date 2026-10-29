@@ -1,6 +1,7 @@
 ---
 // 導流區塊：LINE 為主、IG 為輔
-// variant="article"（預設）：文章結尾，引導在 LINE 輸入關鍵字領取延伸資料
+// 文章結尾：有 keyword → 引導在 LINE 輸入關鍵字領取延伸資料
+//           沒有 keyword → 市場快訊類文章，邀請加入 LINE 接收市場更新
 // variant="profile"：自介頁，單純邀請加入 LINE
 import { LINKS, withUtm } from '../site.config';
 
@@ -10,7 +11,7 @@ interface Props {
   igUrl?: string;
   variant?: 'article' | 'profile';
 }
-const { campaign, keyword = LINKS.lineKeyword, igUrl, variant = 'article' } = Astro.props;
+const { campaign, keyword, igUrl, variant = 'article' } = Astro.props;
 const isProfile = variant === 'profile';
 const place = isProfile ? 'profile' : 'article-end';
 ---
@@ -23,6 +24,14 @@ const place = isProfile ? 'profile' : 'article-end';
         <p class="cta-title">加入 MOMO 官方 LINE</p>
         <p class="cta-text">
           市場出現重要變化時，我會在 LINE 第一時間整理重點給你；新文章與配置觀念，也會在 LINE 同步分享。
+        </p>
+      </>
+    ) : !keyword ? (
+      <>
+        <p class="cta-eyebrow">掌握下一個市場變化</p>
+        <p class="cta-title">加入 MOMO 官方 LINE</p>
+        <p class="cta-text">
+          重要數據公布、市場出現變化時，我會在 LINE 第一時間整理重點給你，不用自己半夜盯盤。
         </p>
       </>
     ) : (

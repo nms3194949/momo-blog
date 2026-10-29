@@ -22,7 +22,6 @@ sources:
   - name: Fed FOMC 聲明（2026/10/28 美國時間）
   - name: CME FedWatch（數據截至 2026/10/29）
   - name: 微軟、Alphabet、SK 海力士、三星電子財報
-line_keyword: 配置
 ---
 
 ## Fed 10 月利率決議結果
