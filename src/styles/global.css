@@ -57,7 +57,15 @@ a { color: inherit; }
 .nav { display: flex; gap: 18px; font-size: 15px; }
 .nav a { text-decoration: none; color: var(--ink-2); }
 .nav a:hover { color: var(--ink); }
-@media (max-width: 420px) { .brand-name { display: none; } }
+@media (max-width: 480px) {
+  .header-inner { gap: 10px; }
+  .brand { gap: 8px; flex-shrink: 0; }
+  .brand-mark { width: 28px; height: 28px; }
+  .brand-name { font-size: 14px; white-space: nowrap; }
+  .nav { gap: 12px; font-size: 14px; }
+  .nav a { white-space: nowrap; }
+}
+@media (max-width: 340px) { .nav { gap: 9px; font-size: 13px; } }
 
 /* ── 首頁 ── */
 .hero { padding: 56px 20px 32px; }
