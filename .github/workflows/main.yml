@@ -1,10 +1,13 @@
 # push 到 main 後：建置 → 發布到 GitHub Pages → 通知搜尋引擎（IndexNow）
+# 另外每小時檢查一次排程文章：date 時間到了、線上還沒有，就自動重新部署
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '7 * * * *' # 每小時第 7 分鐘（GitHub 排程可能延遲幾分鐘到半小時）
 
 permissions:
   contents: read
@@ -16,7 +19,22 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      due: ${{ steps.due.outputs.due }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - id: due
+        name: 檢查排程文章
+        run: node scripts/due-posts.mjs
+
   build:
+    needs: check
+    if: github.event_name != 'schedule' || needs.check.outputs.due != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +53,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
   indexnow:
-    needs: deploy
+    needs: [check, deploy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -48,4 +66,6 @@ jobs:
         run: sleep 30
       - name: 通知 Bing 等搜尋引擎
         run: node scripts/indexnow.mjs
+        env:
+          DUE_POSTS: ${{ github.event_name == 'schedule' && needs.check.outputs.due || '' }}
         continue-on-error: true
