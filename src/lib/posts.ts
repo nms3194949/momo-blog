@@ -2,9 +2,14 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'posts'>;
 
-/** 已發布文章，新到舊 */
+/**
+ * 已發布文章，新到舊。
+ * 排程發文：date 還沒到的文章不會出現（建置當下才判斷），
+ * 由 GitHub Actions 每小時檢查一次，時間到了自動重新部署。
+ */
 export async function getPublishedPosts(): Promise<Post[]> {
-  const all = await getCollection('posts', ({ data }) => !data.draft);
+  const now = Date.now();
+  const all = await getCollection('posts', ({ data }) => !data.draft && data.date.getTime() <= now);
   return all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 

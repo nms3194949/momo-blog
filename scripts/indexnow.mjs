@@ -17,7 +17,10 @@ const all = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
 // 2. 找出這次 commit 改了哪些檔案
 let changed = [];
-try {
+if (process.env.DUE_POSTS) {
+  // 排程發文：只通知時間到的那幾篇
+  changed = process.env.DUE_POSTS.split(',').map((d) => `src/content/posts/${d}/index.md`);
+} else try {
   changed = execSync('git diff --name-only HEAD~1 HEAD', { encoding: 'utf8' }).split('\n').filter(Boolean);
 } catch {
   changed = ['(unknown)'];
