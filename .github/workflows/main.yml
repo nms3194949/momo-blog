@@ -1,5 +1,5 @@
 # push 到 main 後：建置 → 發布到 GitHub Pages → 通知搜尋引擎（IndexNow）
-# 另外每小時檢查一次排程文章：date 時間到了、線上還沒有，就自動重新部署
+# 另外每 30 分鐘檢查一次排程文章：date 時間到了、線上還沒有，就自動重新部署
 name: Deploy to GitHub Pages
 
 on:
@@ -7,7 +7,7 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    - cron: '7 * * * *' # 每小時第 7 分鐘（GitHub 排程可能延遲幾分鐘到半小時）
+    - cron: '7,37 * * * *' # 每小時第 7、37 分鐘（GitHub 排程可能延遲幾分鐘到半小時）
 
 permissions:
   contents: read
