@@ -1,6 +1,18 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'posts'>;
+export type Guide = CollectionEntry<'guide'>;
+
+/** 已發布的理財百科（時間到才出現），新到舊 */
+export async function getPublishedGuides(): Promise<Guide[]> {
+  const now = Date.now();
+  const all = await getCollection('guide', ({ data }) => !data.draft && data.date.getTime() <= now);
+  return all.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+}
+
+export function guidePath(g: Guide): string {
+  return `/guide/${g.id}/`;
+}
 
 /**
  * 已發布文章，新到舊。

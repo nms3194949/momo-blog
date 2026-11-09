@@ -45,4 +45,37 @@ const posts = defineCollection({
     }),
 });
 
-export const collections = { posts };
+/**
+ * 理財百科 = src/content/guide/<網址代稱>/index.md
+ * 和 IG 文章分開：不出現在首頁與主題頁，網址是 /guide/<網址代稱>/
+ */
+export const GUIDE_CATEGORIES = ['名詞解釋', '常見疑問', '比較選擇', '試算觀念'] as const;
+
+const guide = defineCollection({
+  loader: glob({
+    pattern: '**/index.md',
+    base: './src/content/guide',
+    generateId: ({ entry }) => entry.replace(/\/index\.md$/, ''),
+  }),
+  schema: z.object({
+    /** 標題：讀者會問 AI／搜尋的問句 */
+    title: z.string(),
+    description: z.string().max(160),
+    /** 一句話答案：2–3 句直接回答標題 */
+    summary: z.string(),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    category: z.enum(GUIDE_CATEGORIES),
+    /** 主要關鍵字（給結構化資料與內部比對） */
+    keywords: z.array(z.string()).default([]),
+    /** 和 IG 文章共用的 6 個主題，用來推薦相關 IG 文章 */
+    tags: z.array(z.string()).default([]),
+    faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
+    sources: z
+      .array(z.object({ name: z.string(), url: z.string().url().optional() }))
+      .default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { posts, guide };

@@ -1,9 +1,10 @@
 // llms.txt：給 AI 讀的網站索引（https://llmstxt.org）
 import { SITE, AUTHOR, AUTHOR_TAGLINE, LINKS } from '../site.config';
-import { getPublishedPosts, absUrl, postPath } from '../lib/posts';
+import { getPublishedPosts, getPublishedGuides, absUrl, postPath, guidePath } from '../lib/posts';
 
 export async function GET() {
   const posts = await getPublishedPosts();
+  const guides = await getPublishedGuides();
 
   const lines = [
     `# ${SITE.name}`,
@@ -18,6 +19,16 @@ export async function GET() {
     '',
     ...posts.map((p) => `- [${p.data.title}](${absUrl(postPath(p))}): ${p.data.summary}`),
     '',
+    ...(guides.length
+      ? [
+          '## 理財百科',
+          '',
+          `基金、配息、債券與資產配置的名詞解釋與常見問題（目錄：${absUrl('/guide/')}）`,
+          '',
+          ...guides.map((g) => `- [${g.data.title}](${absUrl(guidePath(g))}): ${g.data.summary}`),
+          '',
+        ]
+      : []),
     '## 關於',
     '',
     `- [作者介紹](${absUrl('/about/')}): ${AUTHOR.name} 的資歷與核心觀念`,

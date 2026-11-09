@@ -19,19 +19,19 @@ const all = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 let changed = [];
 if (process.env.DUE_POSTS) {
   // 排程發文：只通知時間到的那幾篇
-  changed = process.env.DUE_POSTS.split(',').map((d) => `src/content/posts/${d}/index.md`);
+  changed = process.env.DUE_POSTS.split(',').map((p) => `src/content/${p.includes('/') ? p : `posts/${p}`}/index.md`);
 } else try {
   changed = execSync('git diff --name-only HEAD~1 HEAD', { encoding: 'utf8' }).split('\n').filter(Boolean);
 } catch {
   changed = ['(unknown)'];
 }
 
-// 只改文章 → 通知那幾篇＋首頁＋主題頁；改到版型或設定 → 通知全部網址
-const postDirs = new Set();
+// 只改文章 → 通知那幾篇＋首頁＋主題頁＋百科目錄；改到版型或設定 → 通知全部網址
+const postDirs = new Set(); // 例如 posts/2026-11-post04、guide/distribution-rate
 let siteWide = false;
 for (const f of changed) {
-  const m = f.match(/^src\/content\/posts\/([^/]+)\//);
-  if (m) postDirs.add(m[1]);
+  const m = f.match(/^src\/content\/(posts|guide)\/([^/]+)\//);
+  if (m) postDirs.add(`${m[1]}/${m[2]}`);
   else if (f.startsWith('src/') || f.startsWith('public/') || f === '(unknown)') siteWide = true;
 }
 
@@ -40,7 +40,7 @@ if (siteWide) {
   urls = all;
 } else {
   urls = all.filter(
-    (u) => [...postDirs].some((d) => u.includes(`/posts/${d}/`)) || u === `${SITE}/` || u.includes('/tags/'),
+    (u) => [...postDirs].some((d) => u.includes(`/${d}/`)) || u === `${SITE}/` || u.includes('/tags/') || u.endsWith('/guide/'),
   );
 }
 

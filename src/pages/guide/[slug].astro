@@ -1,0 +1,189 @@
+---
+// 理財百科單篇：一句話答案 → 內文 → 常見問題 → 來源 → 相關 IG 文章
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBox from '../../components/CtaBox.astro';
+import PostCard from '../../components/PostCard.astro';
+import { SITE, AUTHOR, AUTHOR_TAGLINE } from '../../site.config';
+import {
+  getPublishedGuides,
+  getPublishedPosts,
+  url,
+  absUrl,
+  guidePath,
+  formatDate,
+  type Guide,
+} from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const guides = await getPublishedGuides();
+  return guides.map((g) => ({ params: { slug: g.id }, props: { guide: g, all: guides } }));
+}
+
+interface Props {
+  guide: Guide;
+  all: Guide[];
+}
+const { guide, all } = Astro.props;
+const { data } = guide;
+const { Content } = await render(guide);
+
+const pageUrl = absUrl(guidePath(guide));
+const modified = data.updated ?? data.date;
+
+// 相關 IG 文章：同主題優先
+const posts = await getPublishedPosts();
+const relatedPosts = posts
+  .map((p) => ({ p, score: p.data.tags.filter((t) => data.tags.includes(t)).length }))
+  .filter((x) => x.score > 0)
+  .sort((a, b) => b.score - a.score || b.p.data.date.getTime() - a.p.data.date.getTime())
+  .slice(0, 3)
+  .map((x) => x.p);
+
+// 同分類的其他百科
+const moreGuides = all.filter((g) => g.id !== guide.id && g.data.category === data.category).slice(0, 5);
+
+const jsonLd: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${pageUrl}#article`,
+    headline: data.title,
+    description: data.description,
+    abstract: data.summary,
+    datePublished: data.date.toISOString(),
+    dateModified: modified.toISOString(),
+    inLanguage: SITE.lang,
+    mainEntityOfPage: pageUrl,
+    url: pageUrl,
+    articleSection: `理財百科・${data.category}`,
+    keywords: data.keywords.join(', '),
+    author: { '@id': absUrl('/about/#person') },
+    publisher: { '@id': absUrl('/about/#person') },
+    isPartOf: { '@id': absUrl('/#website') },
+    citation: data.sources.length
+      ? data.sources.map((s) => (s.url ? { '@type': 'CreativeWork', name: s.name, url: s.url } : s.name))
+      : undefined,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首頁', item: absUrl('/') },
+      { '@type': 'ListItem', position: 2, name: '理財百科', item: absUrl('/guide/') },
+      { '@type': 'ListItem', position: 3, name: data.title, item: pageUrl },
+    ],
+  },
+];
+if (data.faq.length) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: data.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+}
+---
+
+<BaseLayout
+  title={data.title}
+  description={data.description}
+  type="article"
+  jsonLd={jsonLd}
+  publishedTime={data.date.toISOString()}
+  modifiedTime={modified.toISOString()}
+>
+  <article class="wrap article">
+    <nav class="breadcrumb" aria-label="麵包屑">
+      <a href={url('/')}>首頁</a><span>/</span><a href={url('/guide/')}>理財百科</a><span>/</span><span>{data.category}</span>
+    </nav>
+
+    <header class="article-header">
+      <h1>{data.title}</h1>
+      <p class="byline">
+        <a href={url('/about/')}>{AUTHOR.name}</a>・{AUTHOR.jobTitle}
+        <span class="dot">・</span>
+        <time datetime={data.date.toISOString()}>發布 {formatDate(data.date)}</time>
+        {data.updated && (<><span class="dot">・</span><time datetime={data.updated.toISOString()}>更新 {formatDate(data.updated)}</time></>)}
+      </p>
+    </header>
+
+    <section class="summary" aria-label="一句話答案">
+      <p class="summary-label">一句話答案</p>
+      <p>{data.summary}</p>
+    </section>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      data.faq.length > 0 && (
+        <section class="faq">
+          <h2>常見問題</h2>
+          {data.faq.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </section>
+      )
+    }
+
+    {
+      data.sources.length > 0 && (
+        <section class="sources">
+          <h2>資料來源</h2>
+          <ul>
+            {data.sources.map((s) => (
+              <li>{s.url ? <a href={s.url} target="_blank" rel="noopener nofollow">{s.name}</a> : s.name}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <CtaBox campaign={`guide-${guide.id}`} variant="guide" />
+
+    <section class="author-box">
+      <img src={url(AUTHOR.avatar)} alt={AUTHOR.name} width="64" height="64" loading="lazy" />
+      <div>
+        <p class="author-name">{AUTHOR.name}<span>{AUTHOR_TAGLINE}</span></p>
+        <p>{AUTHOR.bio}</p>
+      </div>
+    </section>
+  </article>
+
+  {
+    moreGuides.length > 0 && (
+      <section class="wrap related">
+        <h2>同類百科</h2>
+        <ul class="guide-list">
+          {moreGuides.map((g) => (
+            <li>
+              <a href={url(guidePath(g))}>
+                <span class="guide-q">{g.data.title}</span>
+                <span class="guide-a">{g.data.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  {
+    relatedPosts.length > 0 && (
+      <section class="wrap related">
+        <h2>相關文章</h2>
+        <div class="card-grid">
+          {relatedPosts.map((p) => <PostCard post={p} />)}
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

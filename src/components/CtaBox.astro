@@ -9,16 +9,24 @@ interface Props {
   campaign: string;
   keyword?: string;
   igUrl?: string;
-  variant?: 'article' | 'profile';
+  variant?: 'article' | 'profile' | 'guide';
 }
 const { campaign, keyword, igUrl, variant = 'article' } = Astro.props;
 const isProfile = variant === 'profile';
-const place = isProfile ? 'profile' : 'article-end';
+const place = isProfile ? 'profile' : variant === 'guide' ? 'guide-end' : 'article-end';
 ---
 
 <aside class="cta-box">
   {
-    isProfile ? (
+    variant === 'guide' ? (
+      <>
+        <p class="cta-eyebrow">想知道自己的配置怎麼做？</p>
+        <p class="cta-title">加入 MOMO 官方 LINE</p>
+        <p class="cta-text">
+          看懂名詞只是第一步。加入 LINE 可以收到配置觀念整理與市場重點，有問題也可以直接問我。
+        </p>
+      </>
+    ) : isProfile ? (
       <>
         <p class="cta-eyebrow">聯繫 MOMO</p>
         <p class="cta-title">加入 MOMO 官方 LINE</p>

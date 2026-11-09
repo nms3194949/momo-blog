@@ -1,0 +1,244 @@
+# 理財百科題目清單：排程任務依序挑第一個 status: todo 的題目
+# status：todo（待寫）／scheduled（已排入，填 date）／skip（不寫）
+# 可以自由調整順序、新增題目（slug 用英文小寫加連字號，上線後不要改）
+
+- slug: distribution-rate
+  title: 配息率是什麼？配息率高就代表報酬高嗎？
+  category: 名詞解釋
+  tags: [配息基金]
+  status: scheduled
+  date: 2026-11-12T20:30:00+08:00
+
+- slug: distribution-from-capital
+  title: 基金配息會吃到本金嗎？怎麼看配息來源？
+  category: 常見疑問
+  tags: [配息基金]
+  status: todo
+
+- slug: total-return
+  title: 基金的真實報酬怎麼算？配息加淨值變化一次看懂
+  category: 試算觀念
+  tags: [配息基金, 投資觀念]
+  status: todo
+
+- slug: duration
+  title: 債券存續期間是什麼？為什麼利率一動，債券基金就跟著漲跌？
+  category: 名詞解釋
+  tags: [美債與利率]
+  status: todo
+
+- slug: lump-sum-vs-dca
+  title: 一次投入還是定期定額比較好？
+  category: 比較選擇
+  tags: [現金規劃, 投資觀念]
+  status: todo
+
+- slug: asset-allocation
+  title: 資產配置是什麼？為什麼不能只買一種基金？
+  category: 名詞解釋
+  tags: [資產配置]
+  status: todo
+
+- slug: investment-grade-vs-high-yield
+  title: 投資等級債和高收益債差在哪？
+  category: 比較選擇
+  tags: [美債與利率, 配息基金]
+  status: todo
+
+- slug: retirement-monthly-50k
+  title: 退休每月想領 5 萬，要準備多少錢？
+  category: 試算觀念
+  tags: [現金規劃]
+  status: todo
+
+- slug: bond-yield-and-price
+  title: 殖利率上升，債券價格為什麼會下跌？
+  category: 名詞解釋
+  tags: [美債與利率]
+  status: todo
+
+- slug: emergency-fund
+  title: 緊急預備金要準備多少？放哪裡比較好？
+  category: 常見疑問
+  tags: [現金規劃]
+  status: todo
+
+- slug: sequence-of-returns-risk
+  title: 報酬順序風險是什麼？退休提領為什麼最怕一開始就大跌？
+  category: 名詞解釋
+  tags: [現金規劃, 投資觀念]
+  status: todo
+
+- slug: monthly-distribution-fund
+  title: 月配息基金是什麼？適合哪些人？
+  category: 常見疑問
+  tags: [配息基金]
+  status: todo
+
+- slug: rebalancing
+  title: 再平衡是什麼？多久做一次比較好？
+  category: 名詞解釋
+  tags: [資產配置]
+  status: todo
+
+- slug: core-satellite
+  title: 核心衛星配置是什麼？
+  category: 名詞解釋
+  tags: [資產配置]
+  status: todo
+
+- slug: accumulation-vs-distribution-class
+  title: 基金的累積型和配息型差在哪？怎麼選？
+  category: 比較選擇
+  tags: [配息基金]
+  status: todo
+
+- slug: nav
+  title: 基金淨值是什麼？淨值越低就越便宜嗎？
+  category: 名詞解釋
+  tags: [投資觀念]
+  status: todo
+
+- slug: equity-vs-bond-fund
+  title: 股票型和債券型基金差在哪？在組合裡怎麼分工？
+  category: 比較選擇
+  tags: [資產配置]
+  status: todo
+
+- slug: four-percent-rule
+  title: 4% 法則是什麼？在台灣適用嗎？
+  category: 試算觀念
+  tags: [現金規劃]
+  status: todo
+
+- slug: fund-fees
+  title: 買基金有哪些費用？總費用率怎麼看？
+  category: 常見疑問
+  tags: [投資觀念]
+  status: todo
+
+- slug: compound-interest
+  title: 複利是什麼？用假設 6% 年化報酬率試算給你看
+  category: 試算觀念
+  tags: [投資觀念, 現金規劃]
+  status: todo
+
+- slug: rule-of-72
+  title: 72 法則是什麼？資產翻倍要多久？
+  category: 試算觀念
+  tags: [投資觀念]
+  status: todo
+
+- slug: inflation-real-return
+  title: 通膨怎麼吃掉你的報酬？實質報酬率怎麼算？
+  category: 試算觀念
+  tags: [投資觀念]
+  status: todo
+
+- slug: currency-risk
+  title: 美元計價基金的匯率風險怎麼看？
+  category: 常見疑問
+  tags: [投資觀念]
+  status: todo
+
+- slug: max-drawdown
+  title: 最大回撤是什麼？怎麼判斷自己扛得住多少波動？
+  category: 名詞解釋
+  tags: [投資觀念]
+  status: todo
+
+- slug: standard-deviation
+  title: 基金的標準差代表什麼？數字越大越危險嗎？
+  category: 名詞解釋
+  tags: [投資觀念]
+  status: todo
+
+- slug: sharpe-ratio
+  title: 夏普值是什麼？怎麼用來比較基金？
+  category: 名詞解釋
+  tags: [投資觀念]
+  status: todo
+
+- slug: correlation
+  title: 資產相關性是什麼？為什麼分散要看相關性？
+  category: 名詞解釋
+  tags: [資產配置]
+  status: todo
+
+- slug: diversification-myth
+  title: 買很多支基金，就等於有分散風險嗎？
+  category: 常見疑問
+  tags: [資產配置]
+  status: todo
+
+- slug: cash-allocation
+  title: 投資組合要留多少現金？
+  category: 常見疑問
+  tags: [現金規劃, 資產配置]
+  status: todo
+
+- slug: short-vs-long-term-bond
+  title: 短天期債和長天期債差在哪？
+  category: 比較選擇
+  tags: [美債與利率]
+  status: todo
+
+- slug: fed-rate-and-funds
+  title: Fed 升息、降息，對基金有什麼影響？
+  category: 常見疑問
+  tags: [美債與利率, 市場判讀]
+  status: todo
+
+- slug: cpi
+  title: CPI 是什麼？為什麼會影響股市和債市？
+  category: 名詞解釋
+  tags: [市場判讀]
+  status: todo
+
+- slug: nonfarm-payrolls
+  title: 非農就業數據是什麼？為什麼市場這麼在意？
+  category: 名詞解釋
+  tags: [市場判讀]
+  status: todo
+
+- slug: yield-curve-inversion
+  title: 殖利率倒掛是什麼？代表經濟衰退要來了嗎？
+  category: 名詞解釋
+  tags: [美債與利率, 市場判讀]
+  status: todo
+
+- slug: correction-vs-bear-market
+  title: 修正和熊市差在哪？跌多少才算？
+  category: 名詞解釋
+  tags: [市場判讀, 投資觀念]
+  status: todo
+
+- slug: buy-the-dip-or-pause
+  title: 市場大跌時，定期定額要加碼還是停扣？
+  category: 常見疑問
+  tags: [投資觀念, 現金規劃]
+  status: todo
+
+- slug: balanced-fund
+  title: 平衡型基金是什麼？適合哪些人？
+  category: 名詞解釋
+  tags: [資產配置]
+  status: todo
+
+- slug: money-market-fund
+  title: 貨幣市場基金是什麼？和定存差在哪？
+  category: 比較選擇
+  tags: [現金規劃]
+  status: todo
+
+- slug: emerging-market-bond
+  title: 新興市場債是什麼？風險在哪裡？
+  category: 名詞解釋
+  tags: [美債與利率]
+  status: todo
+
+- slug: risk-tolerance
+  title: 風險承受度怎麼評估？除了問卷還要看什麼？
+  category: 常見疑問
+  tags: [投資觀念, 資產配置]
+  status: todo
