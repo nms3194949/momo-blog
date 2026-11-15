@@ -54,6 +54,11 @@ a { color: inherit; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; }
 .brand-mark { width: 32px; height: 32px; border-radius: 50%; display: block; }
 .brand-name { font-size: 15px; }
+.sitebar { background: #0c152a; font-size: 13px; }
+.sitebar-inner { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 34px; }
+.sitebar a { color: #e9dcbf; text-decoration: none; white-space: nowrap; font-weight: 600; }
+.sitebar a:hover { color: #fff; }
+@media (max-width: 380px) { .sitebar { font-size: 12px; } }
 .nav { display: flex; gap: 18px; font-size: 15px; }
 .nav a { text-decoration: none; color: var(--ink-2); }
 .nav a:hover { color: var(--ink); }
