@@ -5,6 +5,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'content-plan/**' # IG 同步、題目清單這類工作檔案，不用重新部署網站
   workflow_dispatch:
   schedule:
     - cron: '7,37 * * * *' # 每小時第 7、37 分鐘（GitHub 排程可能延遲幾分鐘到半小時）
