@@ -34,7 +34,8 @@
   title: 一次投入還是定期定額比較好？
   category: 比較選擇
   tags: [現金規劃, 投資觀念]
-  status: todo
+  status: scheduled
+  date: 2026-11-25T20:30:00+08:00
 
 - slug: asset-allocation
   title: 資產配置是什麼？為什麼不能只買一種基金？
